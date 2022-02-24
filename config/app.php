@@ -69,7 +69,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Asia/Tehran',
 
     /*
     |--------------------------------------------------------------------------
@@ -191,6 +191,7 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
+        'SiteHelper' => App\Helpers\SiteHelper::class,
         // ...
     ])->toArray(),
 

@@ -108,4 +108,7 @@ return [
 
     'password_timeout' => 10800,
 
+
+    'register_expiration_time' => env('REGISTER_EXPIRATION_TIME', 1440), // 60 * 24
+
 ];
