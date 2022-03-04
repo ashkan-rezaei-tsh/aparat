@@ -109,7 +109,7 @@ return [
     'password_timeout' => 10800,
 
 
-    'register_expiration_time' => env('REGISTER_EXPIRATION_TIME', 1440), // 60 * 24
+    'change_email_cache_time' => env('CHANGE_EMAIL_CACHE_TIME', 1440), // 60 * 24
 
     // Time in minutes to generate a new verification code
     'send_verification_code_time' => env('SEND_VERIFICATION_CODE_TIME', 60),
