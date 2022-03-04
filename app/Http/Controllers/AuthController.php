@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\UserAlreadyRegisteredException;
 use App\Http\Requests\Auth\RegisterUserRequest;
+use App\Http\Requests\Auth\ResendVerificationCodeRequest;
 use App\Http\Requests\Auth\VerifyUserRequest;
 use App\Models\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -57,7 +58,7 @@ class AuthController extends Controller
         $field = $request->getFieldName();
         $value = $request->getFieldValue();
 
-        $code = random_int(10000, 99999);
+        $code = SiteHelper::generateVerificationCode();
 
         $user = User::where($field, $value)->first();
 
@@ -114,5 +115,29 @@ class AuthController extends Controller
         $user->save();
 
         return response($user, 200);
+    }
+
+    public function resendVerificationCode(ResendVerificationCodeRequest $request)
+    {
+        $field = $request->getFieldName();
+        $value = $request->getFieldValue();
+
+        $user = User::where($field, $value)->whereNull('verified_at')->first();
+
+        if ($user) {
+            $diffTime = now()->diffInMinutes($user->updated_at);
+
+            if ($diffTime > config('auth.send_verification_code_time', 30)) {
+                $user->verify_code = SiteHelper::generateVerificationCode();
+                $user->save();
+            }
+
+            Log::info('RESEND-USER-REGISTERATION-CODE', ['code' => $user->verify_code]);
+
+            return response(['message' => 'کد فعالسازی دوباره ارسال شد.'], 200);
+        }
+
+
+        throw new ModelNotFoundException('کاربر تایید نشده ای با این مشخصات پیدا نشد.');
     }
 }
