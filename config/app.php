@@ -177,6 +177,11 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /*
+         * My Custom Providers
+         */
+        App\Providers\ModelObserverProvider::class,
+
     ],
 
     /*

@@ -64,4 +64,9 @@ class User extends Authenticatable
             set: fn ($value) => SiteHelper::toValidMoibileNumber($value)
         );
     }
+
+    public function channel()
+    {
+        return $this->hasOne(Channel::class);
+    }
 }

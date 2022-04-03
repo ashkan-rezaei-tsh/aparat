@@ -11,11 +11,13 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\ValidationException;
 use SiteHelper;
 use Symfony\Component\Console\Input\Input;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -55,41 +57,51 @@ class AuthController extends Controller
 
     public function register(RegisterUserRequest $request)
     {
-        $field = $request->getFieldName();
-        $value = $request->getFieldValue();
+        try {
+            $field = $request->getFieldName();
+            $value = $request->getFieldValue();
 
-        $code = SiteHelper::generateVerificationCode();
+            $code = SiteHelper::generateVerificationCode();
 
-        $user = User::where($field, $value)->first();
+            DB::beginTransaction();
 
-        if ($user) {
-            if ($user->verified_at) {
-                throw new UserAlreadyRegisteredException('شما قبلا ثبت نام کرده اید.');
+            $user = User::where($field, $value)->first();
+
+            if ($user) {
+                if ($user->verified_at) {
+                    throw new UserAlreadyRegisteredException('شما قبلا ثبت نام کرده اید.');
+                }
+
+                if ($user->updated_at < now()->subMinutes(5)) {
+                    //TODO: Send another verification code to user
+
+                    Log::info('USER-REGISTERATION-CODE', ['code' => $code]);
+
+                    $user->verify_code = $code;
+                    $user->save();
+
+                    // $response = $this->sendCode($user, $code);
+                    return response(['message' => 'کد جدید برای شما ارسال شد'], 200);
+                } else {
+                    return response(['message' => 'کد فعالسازی قبلا برای شما ارسال شده است'], 200);
+                }
             }
 
-            if ($user->updated_at < now()->subMinutes(5)) {
-                //TODO: Send another verification code to user
+            $user = User::create([
+                $field => $value,
+                'verify_code' => $code,
+            ]);
 
-                Log::info('USER-REGISTERATION-CODE', ['code' => $code]);
+            Log::info('USER-REGISTERATION-CODE', ['code' => $code]);
 
-                $user->verify_code = $code;
-                $user->save();
+            DB::commit();
 
-                // $response = $this->sendCode($user, $code);
-                return response(['message' => 'کد جدید برای شما ارسال شد'], 200);
-            } else {
-                return response(['message' => 'کد فعالسازی قبلا برای شما ارسال شده است'], 200);
-            }
+            return response(['message' => 'اطلاعات شما ثبت و کد فعالسازی برای شما ارسال شد.'], 200);
+        } catch (\Exception $e) {
+            Log::error($e);
+            DB::rollBack();
+            return response(['message' => 'خطا در ثبت اطلاعات']);
         }
-
-        $user = User::create([
-            $field => $value,
-            'verify_code' => $code,
-        ]);
-
-        Log::info('USER-REGISTERATION-CODE', ['code' => $code]);
-
-        return response(['message' => 'اطلاعات شما ثبت و کد فعالسازی برای شما ارسال شد.'], 200);
     }
 
 
