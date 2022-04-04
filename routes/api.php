@@ -16,13 +16,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
+Route::controller(AuthController::class)->group(function () {
+    Route::post('/login', 'login')->name('auth.login');
 
-Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
+    Route::post('/register', 'register')->name('auth.register');
 
-Route::post('/register-verify', [AuthController::class, 'registerVerify'])->name('auth.register-verify');
+    Route::post('/register-verify', 'registerVerify')->name('auth.register-verify');
 
-Route::post('/resend-verification-code', [AuthController::class, 'resendVerificationCode'])->name('auth.resend-verification-code');
+    Route::post('/resend-verification-code', 'resendVerificationCode')->name('auth.resend-verification-code');
+});
+
+
 
 Route::middleware('auth:sanctum')->controller(UserController::class)->group(function () {
     Route::post('/change-email', 'changeEmail')->name('user.change-email');
