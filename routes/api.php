@@ -36,6 +36,8 @@ Route::middleware('auth:sanctum')->controller(UserController::class)->group(func
 
 Route::prefix('/channel')->middleware(['auth:sanctum'])->controller(ChannelController::class)->group(function () {
     Route::put('/{id?}', 'update')->name('channel.update');
+
+    Route::match(['post', 'put'], '/', 'uploadBanner')->name('channel.upload-banner');
 });
 
 

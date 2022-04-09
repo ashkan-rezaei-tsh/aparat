@@ -3,10 +3,12 @@
 namespace App\Services;
 
 use App\Http\Requests\Channel\UpdateChannelRequest;
+use App\Http\Requests\channel\UploadBannerRequest;
 use App\Models\Channel;
 use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class ChannelService extends BaseService
 {
@@ -36,6 +38,29 @@ class ChannelService extends BaseService
         } catch (Exception $exception) {
             DB::rollBack();
             Log::error($exception);
+            return response(['message' => 'خطایی رخ داده است'], 500);
+        }
+    }
+
+    public static function uploadChannerBanner(UploadBannerRequest $request)
+    {
+        try {
+            $banner = $request->file('banner');
+            $fileName = md5(auth()->id()) . '-' . Str::random(15);
+            $banner->move(public_path('channel-banners'), $fileName);
+
+            $channel = auth()->user()->channel;
+
+            if ($channel->banner) {
+                unlink($channel->banner);
+            }
+
+            $channel->banner = 'channel-banners/' . $fileName;
+            $channel->save();
+
+            return response(['banner' => url('channel-banners/' . $fileName)]);
+        } catch (Exception $e) {
+            Log::error($e);
             return response(['message' => 'خطایی رخ داده است'], 500);
         }
     }
