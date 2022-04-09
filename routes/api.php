@@ -32,6 +32,8 @@ Route::controller(AuthController::class)->group(function () {
 Route::middleware('auth:sanctum')->controller(UserController::class)->group(function () {
     Route::post('/change-email', 'changeEmail')->name('user.change-email');
     Route::post('/change-email-submit', 'changeEmailSubmit')->name('user.change-email-submit');
+
+    Route::match(['put', 'post'], '/change-password', 'changePassword')->name('user.change-password');
 });
 
 Route::prefix('/channel')->middleware(['auth:sanctum'])->controller(ChannelController::class)->group(function () {

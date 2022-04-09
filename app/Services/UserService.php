@@ -8,6 +8,7 @@ use App\Http\Requests\Auth\ResendVerificationCodeRequest;
 use App\Http\Requests\Auth\VerifyUserRequest;
 use App\Http\Requests\User\ChangeEmailRequest;
 use App\Http\Requests\User\ChangeEmailSubmitRequest;
+use App\Http\Requests\user\ChangePasswordRequest;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -235,5 +236,33 @@ class UserService extends BaseService
         Cache::forget($cacheKey);
 
         return response(['message' => 'ایمیل با موفقیت تغییر کرد.'], 200);
+    }
+
+
+    /**
+     * Change user password
+     *
+     * @param ChangePasswordRequest $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+     */
+    public static function changePassword(ChangePasswordRequest $request)
+    {
+        try {
+            $user = auth()->user();
+
+            if (!Hash::check($request->oldPassword, $user->password)) {
+                return response(['message' => 'گذرواژه وارد شده مطابقت ندارد'], 400);
+            }
+
+            $user->update([
+                'password' => $request->newPassword
+            ]);
+
+            return response(['message' => 'گذرواژه با موفقیت بروزرسانی شد']);
+        } catch (Exception $exception) {
+            Log::error($exception);
+
+            return response(['message' => 'خطایی رخ داده است'], 500);
+        }
     }
 }
