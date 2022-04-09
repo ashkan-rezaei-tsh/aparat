@@ -34,7 +34,10 @@ class UserFactory extends Factory
     public function admin()
     {
         return $this->state([
-            'type' => User::TYPE_ADMIN
+            'type' => User::TYPE_ADMIN,
+            'name' => 'اشکان رضایی',
+            'email' => 'ashkan.rezaei.tsh@gmail.com',
+            'password' => '$2y$10$yHOVJzIYR5NRsj1JVFrKIuJ8X4JZHlW7Y7QAgRPpnd4MEp9uglwHK', // 123456
         ]);
     }
 
