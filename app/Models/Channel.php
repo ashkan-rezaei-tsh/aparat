@@ -19,6 +19,10 @@ class Channel extends Model
         'socials',
     ];
 
+    protected $casts = [
+        'socials' => 'array'
+    ];
+
 
     public function user()
     {

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Requests\Channel\UpdateChannelRequest;
+use App\Http\Requests\channel\UpdateSocialNetworksRequest;
 use App\Http\Requests\channel\UploadBannerRequest;
 use App\Models\Channel;
 use Exception;
@@ -59,8 +60,26 @@ class ChannelService extends BaseService
             $channel->save();
 
             return response(['banner' => url('channel-banners/' . $fileName)]);
-        } catch (Exception $e) {
-            Log::error($e);
+        } catch (Exception $exception) {
+            Log::error($exception);
+            return response(['message' => 'خطایی رخ داده است'], 500);
+        }
+    }
+
+    public static function updateSocialNetworks(UpdateSocialNetworksRequest $request)
+    {
+        try {
+            $socials = $request->validated();
+
+            $channel = auth()->user()->channel;
+            $channel->update([
+                'socials' => $socials,
+            ]);
+
+            return response(['message' => 'شبکه های اجتماعی با موفقیت بروزرسانی شد']);
+        } catch (Exception $exception) {
+            Log::error($exception);
+
             return response(['message' => 'خطایی رخ داده است'], 500);
         }
     }
