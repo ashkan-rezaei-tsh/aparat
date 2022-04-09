@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
         User::factory(10)->create();
         User::factory(1)->admin()->create();
 
-        $this->call(CategoriesTableSeeder::class);
+        $this->call(CategorySeeder::class);
+        $this->call(TagSeeder::class);
 
         Schema::enableForeignKeyConstraints();
     }
