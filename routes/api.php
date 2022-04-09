@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChannelController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VideoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +45,10 @@ Route::prefix('/channel')->middleware(['auth:sanctum'])->controller(ChannelContr
     Route::match(['post', 'put'], '/update-social-networks', 'updateSocialNetworks')->name('channel.update-social-networks');
 });
 
+
+Route::prefix('/video')->middleware(['auth:sanctum'])->controller(VideoController::class)->group(function () {
+    Route::post('/upload', 'uploadVideo')->name('video.upload');
+});
 
 
 /* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
