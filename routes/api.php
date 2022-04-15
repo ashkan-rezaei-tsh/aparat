@@ -48,6 +48,10 @@ Route::prefix('/channel')->middleware(['auth:sanctum'])->controller(ChannelContr
 
 Route::prefix('/video')->middleware(['auth:sanctum'])->controller(VideoController::class)->group(function () {
     Route::post('/upload', 'uploadVideo')->name('video.upload');
+
+    Route::post('/upload-banner', 'uploadVideoBanner')->name('video.upload-banner');
+
+    Route::post('/create', 'create')->name('video.create');
 });
 
 
