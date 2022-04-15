@@ -15,8 +15,9 @@ class CreateVideosTable extends Migration
     {
         Schema::create('videos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('user_id')->nullable();
-            $table->unsignedBigInteger('category_id');
+            $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete()->cascadeOnUpdate();
+            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('channel_category_id')->nullable()->constrained('categories')->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('slug', 50);
             $table->string('title');
             $table->text('info')->nullable();
@@ -24,18 +25,6 @@ class CreateVideosTable extends Migration
             $table->string('banner')->nullable();
             $table->timestamp('publish_at')->nullable();
             $table->timestamps();
-
-            $table->foreign('user_id')
-                ->references('id')
-                ->on('users')
-                ->onDelete('set null')
-                ->onUpdate('cascade');
-
-            $table->foreign('category_id')
-                ->references('id')
-                ->on('categories')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
         });
     }
 

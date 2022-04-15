@@ -20,29 +20,33 @@ class CategorySeeder extends Seeder
         }
 
         $categories = [
-            'عمومی' => ['icon' => '', 'banner' => ''],
-            'سریال و فیلم‌های سینمایی' => ['icon' => '', 'banner' => ''],
-            'گیم' => ['icon' => '', 'banner' => ''],
-            'ورزشی' => ['icon' => '', 'banner' => ''],
-            'کارتون' => ['icon' => '', 'banner' => ''],
-            'طنز' => ['icon' => '', 'banner' => ''],
-            'آموزشی' => ['icon' => '', 'banner' => ''],
-            'تفریحی' => ['icon' => '', 'banner' => ''],
-            'فیلم' => ['icon' => '', 'banner' => ''],
-            'مذهبی' => ['icon' => '', 'banner' => ''],
-            'موسیقی' => ['icon' => '', 'banner' => ''],
-            'خبری' => ['icon' => '', 'banner' => ''],
-            'سیاسی' => ['icon' => '', 'banner' => ''],
-            'علم و تکنولوژی' => ['icon' => '', 'banner' => ''],
-            'حوادث' => ['icon' => '', 'banner' => ''],
-            'گردشگری' => ['icon' => '', 'banner' => ''],
-            'حیوانات' => ['icon' => '', 'banner' => ''],
-            'متفرقه' => ['icon' => '', 'banner' => ''],
-            'تبلیغات' => ['icon' => '', 'banner' => ''],
-            'هنری' => ['icon' => '', 'banner' => ''],
-            'بانوان' => ['icon' => '', 'banner' => ''],
-            'سلامت' => ['icon' => '', 'banner' => ''],
-            'آشپزی' => ['icon' => '', 'banner' => ''],
+            'عمومی' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'سریال و فیلم‌های سینمایی' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'گیم' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'ورزشی' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'کارتون' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'طنز' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'آموزشی' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'تفریحی' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'فیلم' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'مذهبی' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'موسیقی' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'خبری' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'سیاسی' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'علم و تکنولوژی' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'حوادث' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'گردشگری' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'حیوانات' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'متفرقه' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'تبلیغات' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'هنری' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'بانوان' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'سلامت' => ['icon' => null, 'banner' => null, 'user_id' => null],
+            'آشپزی' => ['icon' => null, 'banner' => null, 'user_id' => null],
+
+
+            // User's custom category
+            'دسته بندی 1' => ['icon' => null, 'banner' => null, 'user_id' => 11],
         ];
 
         foreach ($categories as $categoryName => $options) {
@@ -50,6 +54,7 @@ class CategorySeeder extends Seeder
                 'title' => $categoryName,
                 'icon' => $options['icon'],
                 'banner' => $options['banner'],
+                'user_id' => $options['user_id'],
             ]);
         }
 
