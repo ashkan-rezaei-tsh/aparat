@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Video;
 
+use App\Models\Playlist;
 use App\Rules\CategoryIdRule;
+use App\Rules\OwnPlaylistRule;
 use App\Rules\UploadedBannerIdRule;
 use App\Rules\UploadedVideoIdRule;
 use Illuminate\Foundation\Http\FormRequest;
@@ -33,7 +35,7 @@ class CreateVideoRequest extends FormRequest
             'info'                  => 'nullable|string',
             'tags'                  => 'nullable|array',
             'tags.*'                => 'exists:tags,id',
-            'playlist'              => 'nullable|exists:playlist,id',
+            'playlist'              => ['nullable', new OwnPlaylistRule],
             'channel_category'      => ['nullable', new CategoryIdRule(CategoryIdRule::PRIVATE_CATEGORIES)],
             'banner'                => ['nullable', new UploadedBannerIdRule],
             'publish_at'            => 'nullable|date_format:Y-m-d H:i:s|after:now',
