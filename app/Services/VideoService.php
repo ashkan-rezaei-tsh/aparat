@@ -28,8 +28,7 @@ class VideoService extends BaseService
         try {
             $video = $request->file('video');
             $fileName = time() . Str::random(10);
-            $path = public_path('videos/tmp/');
-            $video->move($path, $fileName);
+            Storage::disk('videos')->put('/tmp/' . $fileName, $video->get());
 
             return response(['video' => $fileName], 200);
         } catch (Exception $exception) {
@@ -50,8 +49,7 @@ class VideoService extends BaseService
         try {
             $banner = $request->file('banner');
             $fileName = time() . Str::random(10) . '-banner';
-            $path = public_path('videos/tmp/');
-            $banner->move($path, $fileName);
+            Storage::disk('videos')->put('/tmp/' . $fileName, $banner->get());
 
             return response(['banner' => $fileName], 200);
         } catch (Exception $exception) {
