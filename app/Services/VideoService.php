@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Helpers\SiteHelper;
 use App\Http\Requests\Video\CreateVideoRequest;
 use App\Http\Requests\Video\UploadVideoBannerRequest;
 use App\Http\Requests\Video\UploadVideoRequest;
@@ -65,25 +66,28 @@ class VideoService extends BaseService
         try {
             DB::beginTransaction();
 
-            Storage::disk('videos')->move('/tmp/' . $request->video_id, auth()->id() . '/' . $request->video_id);
-
-            if ($request->banner) {
-                $banner = $request->video_id . '-banner';
-                Storage::disk('videos')->move('/tmp/' . $request->banner, auth()->id() . '/' . $banner);
-                $request->banner = $banner;
-            }
-
             $video = Video::create([
                 'user_id'               => auth()->id(),
                 'category_id'           => $request->category,
                 'channel_category_id'   => $request->channel_category,
-                'slug'                  => $request->video_id, // TODO: Calculate Slug
+                'slug'                  => '',
                 'title'                 => $request->title,
                 'info'                  => $request->info,
                 'duration'              => 0, //TODO: get video duration
                 'banner'                => $request->banner,
                 'publish_at'            => $request->publish_at,
             ]);
+
+            $video->slug = SiteHelper::uniqueId($video->id);
+            $video->banner = $video->slug . '-banner';
+            $video->save();
+
+            Storage::disk('videos')->move('/tmp/' . $request->video_id, auth()->id() . '/' . $video->slug);
+
+            if ($request->banner) {
+                Storage::disk('videos')->move('/tmp/' . $request->banner, auth()->id() . '/' . $video->banner);
+            }
+
 
             if ($request->playlist) {
                 $playlist = Playlist::find($request->playlist);
@@ -95,7 +99,7 @@ class VideoService extends BaseService
             }
 
             DB::commit();
-            return response(['message' => 'ویدیو با موفقیت ثبت شد', 'data' => $video], 201);
+            return response(['data' => $video], 201);
         } catch (Exception $exception) {
             DB::rollBack();
             Log::error($exception);
