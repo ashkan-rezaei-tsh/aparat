@@ -60,8 +60,12 @@ class VideoService extends BaseService
 
     public static function create(CreateVideoRequest $request)
     {
-        // dd(Storage::disk('videos'));
         try {
+            /**
+             *  @var Media
+             */
+            $video = \FFMpeg::fromDisk('videos')->open('/tmp/' . $request->video_id);
+
             DB::beginTransaction();
 
             $video = Video::create([
@@ -71,7 +75,7 @@ class VideoService extends BaseService
                 'slug'                  => '',
                 'title'                 => $request->title,
                 'info'                  => $request->info,
-                'duration'              => 0, //TODO: get video duration
+                'duration'              => $video->getDurationInSeconds(),
                 'banner'                => $request->banner,
                 'publish_at'            => $request->publish_at,
             ]);
