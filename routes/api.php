@@ -65,6 +65,10 @@ Route::prefix('/category')->middleware(['auth:sanctum'])->controller(CategoryCon
     Route::get('/', 'index')->name('categories.get-all');
 
     Route::get('/my-categories', 'myCategories')->name('categories.get-my-categories');
+
+    Route::post('/', 'create')->name('categories.create');
+
+    Route::post('/upload-banner', 'uploadBanner')->name('categories.upload-banner');
 });
 /* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
