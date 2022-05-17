@@ -17,4 +17,11 @@ class Category extends Model
         'icon',
         'banner',
     ];
+
+    //region Relations
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    //endRegion
 }
