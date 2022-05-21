@@ -16,8 +16,15 @@ class Playlist extends Model
         'title',
     ];
 
+    //region Relations
     public function videos()
     {
         return $this->belongsToMany(Video::class, 'playlist_videos');
     }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+    //endregion Relations
 }

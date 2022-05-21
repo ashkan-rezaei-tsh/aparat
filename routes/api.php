@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChannelController;
+use App\Http\Controllers\PlaylistController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VideoController;
 use Illuminate\Http\Request;
@@ -57,7 +58,6 @@ Route::prefix('/video')->middleware(['auth:sanctum'])->controller(VideoControlle
 });
 
 
-
 /**
  * Category Routes
  */
@@ -70,6 +70,17 @@ Route::prefix('/category')->middleware(['auth:sanctum'])->controller(CategoryCon
 
     Route::post('/upload-banner', 'uploadBanner')->name('categories.upload-banner');
 });
-/* Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-}); */
+
+
+/**
+ * Playlist Routes
+ */
+Route::prefix('/playlist')->middleware(['auth:sanctum'])->controller(PlaylistController::class)->group(function () {
+    Route::get('/', 'index')->name('playlists.get-all');
+
+    Route::get('/my-playlists', 'myPlaylists')->name('playlists.get-my-playlists');
+
+    Route::post('/', 'create')->name('playlists.create');
+
+    Route::post('/upload-banner', 'uploadBanner')->name('playlists.upload-banner');
+});

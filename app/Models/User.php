@@ -65,15 +65,22 @@ class User extends Authenticatable
         );
     }
 
+    //region Relations
     public function channel()
     {
         return $this->hasOne(Channel::class);
     }
 
-    //region Relations
+
     public function categories()
     {
         return $this->hasMany(Category::class);
+    }
+
+
+    public function playlists()
+    {
+        return $this->hasMany(Playlist::class, 'user_id', 'id');
     }
     //endregion Relations
 }
