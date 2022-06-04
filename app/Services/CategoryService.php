@@ -13,18 +13,30 @@ use Illuminate\Support\Facades\Storage;
 
 class CategoryService extends BaseService
 {
-    public static function getAll()
+	/**
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+	 */
+	public static function getAll()
     {
         $categories = Category::all();
         return response($categories, 200);
     }
-
-    public static function getMyCategories()
+	
+	
+	/**
+	 * @return mixed
+	 */
+	public static function getMyCategories()
     {
         return auth()->user()->categories;
     }
-
-    public static function uploadBanner(UploadCategoryBannerRequest $request)
+	
+	/**
+	 * @param UploadCategoryBannerRequest $request
+	 *
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+	 */
+	public static function uploadBanner(UploadCategoryBannerRequest $request)
     {
         try {
             $banner = $request->file('banner');
@@ -37,8 +49,13 @@ class CategoryService extends BaseService
             return response(['message' => 'خطایی رخ داده است'], 500);
         }
     }
-
-    public static function Create(CreateCategoryRequest $request)
+	
+	/**
+	 * @param CreateCategoryRequest $request
+	 *
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+	 */
+	public static function Create(CreateCategoryRequest $request)
     {
         try {
             DB::beginTransaction();
