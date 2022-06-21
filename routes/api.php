@@ -84,3 +84,9 @@ Route::prefix('/playlist')->middleware(['auth:sanctum'])->controller(PlaylistCon
 
     Route::post('/upload-banner', 'uploadBanner')->name('playlists.upload-banner');
 });
+
+Route::prefix('/tag')->middleware(['auth:sanctum'])->controller(\App\Http\Controllers\TagController::class)->group(function(){
+	Route::get('/', 'index')->name('tag.get-all');
+	
+	Route::post('/', 'create')->name('tag.create');
+});
