@@ -57,7 +57,14 @@ class VideoService extends BaseService
             return response(['message' => 'خطایی رخ داده است'], 500);
         }
     }
-
+	
+	/**
+	 * Create a Video
+	 *
+	 * @param CreateVideoRequest $request
+	 *
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+	 */
     public static function create(CreateVideoRequest $request)
     {
         try {
@@ -77,6 +84,7 @@ class VideoService extends BaseService
                 'info'                  => $request->info,
                 'duration'              => $video->getDurationInSeconds(),
                 'banner'                => $request->banner,
+				'enable_comments'       => $request->enable_comments,
                 'publish_at'            => $request->publish_at,
             ]);
 
@@ -101,7 +109,7 @@ class VideoService extends BaseService
             }
 
             DB::commit();
-            return response(['data' => $video], 201);
+            return response($video, 201);
         } catch (Exception $exception) {
             DB::rollBack();
             Log::error($exception);

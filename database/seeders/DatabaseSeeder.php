@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(CategorySeeder::class);
         $this->call(TagSeeder::class);
-        $this->call(Playlist::class);
+        $this->call(PlaylistSeeder::class);
 
         Schema::enableForeignKeyConstraints();
     }

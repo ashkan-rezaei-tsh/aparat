@@ -21,6 +21,7 @@ class Video extends Model
         'duration',
         'banner',
         'publish_at',
+	    'enable_comments',
     ];
 
     public function playlists()
