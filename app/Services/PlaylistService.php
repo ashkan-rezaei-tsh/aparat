@@ -44,6 +44,6 @@ class PlaylistService extends BaseService
 		$data = $request->validated();
 		$user = auth()->user();
 		$playlist = $user->playlists()->create($data);
-		return response(['data' => $playlist], 200);
+		return response($playlist, 200);
 	}
 }

@@ -13,7 +13,15 @@ use Illuminate\Support\Str;
 
 class ChannelService extends BaseService
 {
-    public static function updateChannelInfo(UpdateChannelRequest $request)
+	
+	/**
+	 * Update Channel Info
+	 *
+	 * @param UpdateChannelRequest $request
+	 *
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+	 */
+	public static function updateChannelInfo(UpdateChannelRequest $request)
     {
         try {
             if ($channelId = $request->route('id')) {
@@ -42,8 +50,16 @@ class ChannelService extends BaseService
             return response(['message' => 'خطایی رخ داده است'], 500);
         }
     }
-
-    public static function uploadChannerBanner(UploadBannerRequest $request)
+	
+	
+	/**
+	 * Upload Channel Banner
+	 *
+	 * @param UploadBannerRequest $request
+	 *
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+	 */
+    public static function uploadChannelBanner(UploadBannerRequest $request)
     {
         try {
             $banner = $request->file('banner');
@@ -65,7 +81,14 @@ class ChannelService extends BaseService
             return response(['message' => 'خطایی رخ داده است'], 500);
         }
     }
-
+	
+	/**
+	 * Update Social Media Links
+	 *
+	 * @param UpdateSocialNetworksRequest $request
+	 *
+	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
+	 */
     public static function updateSocialNetworks(UpdateSocialNetworksRequest $request)
     {
         try {

@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Storage;
 class CategoryService extends BaseService
 {
 	/**
+	 * Get All Categories
+	 *
 	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
 	 */
 	public static function getAll()
@@ -24,6 +26,8 @@ class CategoryService extends BaseService
 	
 	
 	/**
+	 * Get Specific User's categories
+	 *
 	 * @return mixed
 	 */
 	public static function getMyCategories()
@@ -32,6 +36,8 @@ class CategoryService extends BaseService
     }
 	
 	/**
+	 * Upload Category banner
+	 *
 	 * @param UploadCategoryBannerRequest $request
 	 *
 	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
@@ -51,6 +57,8 @@ class CategoryService extends BaseService
     }
 	
 	/**
+	 * Create a New Category For a User
+	 *
 	 * @param CreateCategoryRequest $request
 	 *
 	 * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response
@@ -70,7 +78,7 @@ class CategoryService extends BaseService
 
             DB::commit();
 
-            return response(['data' => $category], 200);
+            return response($category, 200);
         } catch (Exception $exception) {
             DB::rollBack();
             Log::error($exception);
