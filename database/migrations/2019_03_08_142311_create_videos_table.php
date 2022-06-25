@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Video;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -24,6 +25,7 @@ class CreateVideosTable extends Migration
             $table->integer('duration');
             $table->string('banner')->nullable();
 			$table->boolean('enable_comments')->default(true);
+			$table->enum('state', Video::STATES)->default(Video::STATE_PENDING);
             $table->timestamp('publish_at')->nullable();
             $table->timestamps();
         });
