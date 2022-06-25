@@ -4,12 +4,14 @@ namespace App\Services;
 
 use App\Events\UploadNewVideo;
 use App\Helpers\SiteHelper;
+use App\Http\Requests\Video\ChangeVideoStateRequest;
 use App\Http\Requests\Video\CreateVideoRequest;
 use App\Http\Requests\Video\UploadVideoBannerRequest;
 use App\Http\Requests\Video\UploadVideoRequest;
 use App\Models\Playlist;
 use App\Models\Video;
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
@@ -117,4 +119,14 @@ class VideoService extends BaseService
 			return response(['message' => 'خطایی رخ داده است'], 500);
 		}
 	}
+    
+    public static function changeState(ChangeVideoStateRequest $request){
+        $video = $request->video;
+        
+        $video->state = $request->state;
+        $video->save();
+        
+        return response($video);
+    }
+
 }

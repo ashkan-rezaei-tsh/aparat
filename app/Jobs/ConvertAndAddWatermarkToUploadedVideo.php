@@ -54,6 +54,7 @@ class ConvertAndAddWatermarkToUploadedVideo implements ShouldQueue
         Storage::disk('videos')->delete($uploadedVideoPath);
         
         $this->video->duration = $uploadedVideo->getDurationInSeconds();
+        $this->video->state = Video::STATE_CONVERTED;
         $this->video->save();
     }
 }

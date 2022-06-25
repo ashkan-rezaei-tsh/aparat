@@ -19,7 +19,7 @@ class CreateVideosTable extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users')->nullOnDelete()->cascadeOnUpdate();
             $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('channel_category_id')->nullable()->constrained('categories')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->string('slug', 50);
+            $table->string('slug', 50)->collation('ascii_bin');
             $table->string('title');
             $table->text('info')->nullable();
             $table->integer('duration');
