@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\UploadNewVideo;
 use App\Helpers\SiteHelper;
 use App\Http\Requests\Video\CreateVideoRequest;
 use App\Http\Requests\Video\UploadVideoBannerRequest;
@@ -74,17 +75,6 @@ class VideoService extends BaseService
 	public static function create(CreateVideoRequest $request)
 	{
 		try{
-			$uploadedVideoPath = '/tmp/' . $request->video_id;
-			$video = FFMpeg::fromDisk('videos')->open($uploadedVideoPath);
-			$filter = new CustomFilter("drawtext=text='https\\://ashkanrezaei.ir': fontcolor=white: fontsize=30:
-				box=1: boxcolor=black@0.25: boxborderw=5:
-				x=10: y=(h - text_h - 10)");
-			$videoFile = $video
-				->addFilter($filter)
-				->export()
-				->toDisk('videos')
-				->inFormat(new X264('libmp3lame'));
-			
 			DB::beginTransaction();
 			
 			$video = Video::create([
@@ -94,19 +84,19 @@ class VideoService extends BaseService
 				'slug' => '',
 				'title' => $request->title,
 				'info' => $request->info,
-				'duration' => $video->getDurationInSeconds(),
+				'duration' => 0,
 				'banner' => $request->banner,
 				'enable_comments' => $request->enable_comments,
 				'publish_at' => $request->publish_at,
+				'state' => Video::STATE_PENDING,
 			]);
 			
 			$video->slug = SiteHelper::uniqueId($video->id);
 			$video->banner = $video->slug . '-banner';
 			$video->save();
 			
-			$videoFile->save(auth()->id() . '/' . $video->slug . '.mp4');
-			Storage::disk('videos')->delete($uploadedVideoPath);
-			
+            event(new UploadNewVideo($video, $request));
+            
 			if($request->banner){
 				Storage::disk('videos')->move('/tmp/' . $request->banner, auth()->id() . '/' . $video->banner);
 			}
