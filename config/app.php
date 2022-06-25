@@ -167,7 +167,7 @@ return [
         /*
          * Package Service Providers...
          */
-        ProtoneMedia\LaravelFFMpeg\Support\ServiceProvider::class,
+//        ProtoneMedia\LaravelFFMpeg\Support\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -198,7 +198,7 @@ return [
 
     'aliases' => Facade::defaultAliases()->merge([
         'SiteHelper'    => App\Helpers\SiteHelper::class,
-        'FFMpeg'        => ProtoneMedia\LaravelFFMpeg\Support\FFMpeg::class
+//        'FFMpeg'        => ProtoneMedia\LaravelFFMpeg\Support\FFMpeg::class
         // ...
     ])->toArray(),
 
