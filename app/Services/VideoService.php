@@ -10,14 +10,10 @@ use App\Http\Requests\Video\UploadVideoRequest;
 use App\Models\Playlist;
 use App\Models\Video;
 use Exception;
-use FFMpeg\Filters\Video\CustomFilter;
-use FFMpeg\Format\Video\WMV;
-use FFMpeg\Format\Video\X264;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use ProtoneMedia\LaravelFFMpeg\Support\FFMpeg;
 
 class VideoService extends BaseService
 {
@@ -96,6 +92,7 @@ class VideoService extends BaseService
 			$video->save();
 			
             event(new UploadNewVideo($video, $request));
+//            ConvertAndAddWatermarkToUploadedVideo::dispatch($video, $request->video_id);
             
 			if($request->banner){
 				Storage::disk('videos')->move('/tmp/' . $request->banner, auth()->id() . '/' . $video->banner);
