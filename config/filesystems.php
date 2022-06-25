@@ -56,12 +56,22 @@ return [
         'videos' => [
             'driver' => 'local',
             'root' => public_path('videos'),
+	        'url' => env('APP_URL') . '/videos',
         ],
 
         'categories' => [
             'driver' => 'local',
             'root' => public_path('categories'),
-        ]
+	        'url' => env('APP_URL') . '/categories',
+        ],
+	    
+	    'channel' => [
+            'driver' => 'local',
+            'root' => public_path('channel'),
+	        'url' => env('APP_URL') . '/channel',
+        ],
+	    
+	    
 
     ],
 
