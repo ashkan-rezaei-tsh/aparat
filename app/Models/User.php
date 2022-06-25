@@ -61,7 +61,7 @@ class User extends Authenticatable
     public function mobile(): Attribute
     {
         return new Attribute(
-            set: fn ($value) => SiteHelper::toValidMoibileNumber($value)
+            set: fn ($value) => SiteHelper::toValidMobileNumber($value)
         );
     }
 

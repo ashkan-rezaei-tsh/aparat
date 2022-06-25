@@ -17,7 +17,7 @@ trait GetRegisterFieldAndValueTrait
         $value = $this->input($field);
 
         if ($field === 'mobile') {
-            $value = SiteHelper::toValidMoibileNumber($value);
+            $value = SiteHelper::toValidMobileNumber($value);
         }
 
         return $value;
